@@ -6,8 +6,8 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 
-app.use('/', async (req, res) => {
-  const targetUrl = req.query.url;
+app.get('/', async (req, res) => {
+  const targetUrl = req.query.url; 
 
   if (!targetUrl) {
     return res.status(400).json({ error: 'Missing "url" query parameter.' });

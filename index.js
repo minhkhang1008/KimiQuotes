@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 
 app.get('/', async (req, res) => {
-  const targetUrl = req.query.url; 
+  const targetUrl = req.query.url;
 
   if (!targetUrl) {
     return res.status(400).json({ error: 'Missing "url" query parameter.' });
@@ -15,10 +15,16 @@ app.get('/', async (req, res) => {
 
   try {
     const response = await fetch(targetUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch the target URL.', details: error.message });
+    res.status(500).json({
+      error: 'Failed to fetch the target URL.',
+      details: error.message,
+    });
   }
 });
 
